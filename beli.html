@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CEKOUT</title>
+    <style>
+        /* Reset CSS */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Body styling */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+}
+
+/* Container styling */
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.card {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Header styling */
+.card-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+/* Image styling */
+.img-fluid {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+/* Price styling */
+.price {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+/* Form styling */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.quantity-label,
+label {
+  font-size: 16px;
+  color: #333;
+}
+
+.quantity-input,
+select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  color: #333;
+  background-color: #f9f9f9;
+}
+
+.buy-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.buy-button:hover {
+  background-color: #0056b3;
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+  .col-md-4 {
+    max-width: 50%;
+  }
+
+  .col-md-8 {
+    max-width: 50%;
+  }
+}
+
+    </style>
+</head>
+<body>
+    <div class="wrapper card">
+        <div class="card">
+            <div class="row g-0">
+                
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <form action="cekout.php" method="POST" id="checkout-form">
+                        
+                            <label for="ram">Kapasitas RAM:</label>
+                            <select id="ram" name="ram">
+                                <option value="8GB">8GB</option>
+                                <option value="12GB">12GB</option>
+                                <option value="16GB">16GB</option>
+                            </select>
+                        
+                            <label for="warna">Varian Warna:</label>
+                            <select id="warna" name="warna">
+                                <option value="Silver">Silver</option>
+                                <option value="Space Gray">Space Gray</option>
+                                <option value="Gold">Gold</option>
+                                <option value="Midnight Green">Midnight Green</option>
+                            </select>
+                        
+                            <label class="quantity-label" for="quantity">Jumlah:</label>
+                            <input type="number" id="quantity" name="jumlah" class="quantity-input" value="1" min="1">
+                            
+                            <!-- Harga -->
+                            <label for="harga">Harga:</label>
+                            <input type="text" id="harga" name="harga" class="price" value="$999.00" readonly>
+                        
+                            <button type="submit" class="buy-button">Beli Sekarang</button>
+                        </form>                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+</body>
+</html>
+<script>
+    // Ambil elemen-elemen form
+    const form = document.getElementById('checkout-form');
+    const ramSelect = document.getElementById('ram');
+    const warnaSelect = document.getElementById('warna');
+    const quantityInput = document.getElementById('quantity');
+    const hargaInput = document.getElementById('harga');
+
+    // Daftar harga RAM
+    const ramPrices = {
+        '8GB': 999.00,
+        '12GB': 1199.00,
+        '128': 1399.00
+    };
+
+    // Daftar harga warna
+    const warnaPrices = {
+        'Silver': 999.00,
+        'Space Gray': 999.00,
+        'Gold': 999.00,
+        'Midnight Green': 999.00
+    };
+
+    // Fungsi untuk mengupdate harga berdasarkan pilihan
+    function updatePrice() {
+        const selectedRam = ramSelect.value;
+        const selectedWarna = warnaSelect.value;
+        const selectedQuantity = quantityInput.valueAsNumber;
+        const ramPrice = ramPrices[selectedRam];
+        const warnaPrice = warnaPrices[selectedWarna];
+        const totalPrice = (ramPrice + warnaPrice) * selectedQuantity;
+        hargaInput.value = `$${totalPrice.toFixed(2)}`;
+    }
+
+    // Tambahkan event listener untuk pembaruan harga saat pilihan berubah
+    ramSelect.addEventListener('change', updatePrice);
+    warnaSelect.addEventListener('change', updatePrice);
+    quantityInput.addEventListener('input', updatePrice);
+
+    // Panggil updatePrice untuk menampilkan harga awal
+    updatePrice();
+</script>
